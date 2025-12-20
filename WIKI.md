@@ -8,7 +8,7 @@ In most programming languages, assigning a value to a variable replaces the old 
 
 | Paradigm | Imperative |
 |----------|------------|
-| Designed by | (anonymous) |
+| Designed by | choas |
 | Appeared in | 2025 |
 | Influenced by | C |
 | File extension | .blur |
