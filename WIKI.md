@@ -348,7 +348,7 @@ Blur is likely Turing-complete when using `sharp for` loops, as it can simulate 
 
 ## External Resources
 
-- [GitHub Repository](#) (link to be added)
+- [GitHub Repository](https://github.com/choas/blur)
 
 ## See Also
 
