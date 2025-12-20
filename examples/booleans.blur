@@ -1,0 +1,30 @@
+// Boolean averaging: >= 0.5 is true, < 0.5 is false
+int blur() {
+    print("=== Boolean Averaging (>= 0.5 threshold) ===");
+    print("");
+
+    bool flag = true;
+    print("flag = true:", flag);
+
+    flag = false;
+    print("flag = false (T, F -> 1/2 = 0.5 -> true):", flag);
+
+    flag = false;
+    print("flag = false (T, F, F -> 1/3 = 0.33 -> false):", flag);
+
+    // Reset with more trues
+    print("");
+    print("New variable:");
+    bool vote = true;
+    vote = true;
+    vote = false;
+    print("vote: T, T, F -> 2/3 = 0.67 -> true:", vote);
+
+    vote = false;
+    print("vote: T, T, F, F -> 2/4 = 0.5 -> true:", vote);
+
+    vote = false;
+    print("vote: T, T, F, F, F -> 2/5 = 0.4 -> false:", vote);
+
+    return 0;
+}

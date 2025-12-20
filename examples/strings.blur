@@ -1,0 +1,52 @@
+// String Blurring - position-based character averaging
+// Space is a no-op, case averages, "str" * n for weighting
+
+int blur() {
+    print("=== String Blurring Demo ===");
+    print("");
+
+    // Basic string blur
+    print("Basic blur:");
+    string s = "hello";
+    print("  s = \"hello\":", s);
+    s = " a   ";
+    print("  s = \" a   \":", s);
+    print("  (space is no-op, 'e' + 'a' = 'c')");
+    print("");
+
+    // Case averaging
+    print("Case averaging:");
+    string name = "abc";
+    print("  name = \"abc\":", name);
+    name = "ABC";
+    print("  name = \"ABC\":", name);
+    name = "ABC";
+    print("  name = \"ABC\":", name);
+    print("  ('a' + 'A' + 'A' = 'L', etc.)");
+    print("");
+
+    // Weighting with repetition
+    print("Weighting with * operator:");
+    string weighted = "aaa" * 5;
+    print("  weighted = \"aaa\" * 5:", weighted);
+    weighted = "zzz";
+    print("  weighted = \"zzz\":", weighted);
+    print("  (5 'a's + 1 'z' = 'f')");
+    print("");
+
+    // blurstr() inline function
+    print("blurstr() function:");
+    print("  blurstr(\"cat\", \"dog\"):", blurstr("cat", "dog"));
+    print("  blurstr(\"AAA\", \"zzz\"):", blurstr("AAA", "zzz"));
+    print("");
+
+    // Partial updates with spaces
+    print("Partial updates (space = no-op):");
+    string word = "test";
+    print("  word = \"test\":", word);
+    word = "   X";
+    print("  word = \"   X\":", word);
+    print("  (only position 3 changed: 't' + 'X' = 'f')");
+
+    return 0;
+}

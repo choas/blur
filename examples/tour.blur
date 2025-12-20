@@ -1,0 +1,105 @@
+// A Tour of Blur
+// All the features in one file
+
+int add(int a, int b) {
+    // Parameters arrive with their full history!
+    return a + b;
+}
+
+int blur() {
+    print("========================================");
+    print("         Welcome to Blur!");
+    print("  Where every variable is an average");
+    print("========================================");
+    print("");
+
+    // --- Integers ---
+    print("[1] INTEGER AVERAGING (ceiling)");
+    int x = 10;
+    print("    x = 10:", x);
+    x = 20;
+    print("    x = 20:", x, "(avg 15)");
+    x = 30;
+    print("    x = 30:", x, "(avg 20)");
+    print("");
+
+    // --- Floats ---
+    print("[2] FLOAT AVERAGING (exact)");
+    float f = 1.0;
+    print("    f = 1.0:", f);
+    f = 2.0;
+    print("    f = 2.0:", f);
+    f = 3.0;
+    print("    f = 3.0:", f);
+    print("");
+
+    // --- Booleans ---
+    print("[3] BOOLEAN AVERAGING (>=50% threshold)");
+    bool b = true;
+    print("    b = true:", b);
+    b = false;
+    print("    b = false:", b, "(50% = true)");
+    b = false;
+    print("    b = false:", b, "(33% = false)");
+    print("");
+
+    // --- Chars ---
+    print("[4] CHAR AVERAGING (ASCII ceiling)");
+    char c = 'A';
+    print("    c = 'A':", c, "(65)");
+    c = 'Z';
+    print("    c = 'Z':", c, "(avg 65+90 = 78 = N)");
+    print("");
+
+    // --- Strings ---
+    print("[5] STRING AVERAGING (per-position)");
+    string s = "CAT";
+    print("    s = \"CAT\":", s);
+    s = "DOG";
+    print("    s = \"DOG\":", s);
+    print("    blurstr(\"hi\", \"HI\"):", blurstr("hi", "HI"));
+    print("");
+
+    // --- Increment ---
+    print("[6] INCREMENT OPERATORS");
+    int n = 5;
+    print("    n = 5:", n);
+    n++;
+    print("    n++:", n, "(adds 6 to history)");
+    n++;
+    print("    n++:", n, "(adds 7 to history)");
+    print("");
+
+    // --- Compound ---
+    print("[7] COMPOUND OPERATORS");
+    int m = 10;
+    print("    m = 10:", m);
+    m += 5;
+    print("    m += 5:", m, "(adds 15 to history)");
+    print("");
+
+    // --- Functions ---
+    print("[8] FUNCTIONS (history travels!)");
+    int val = 100;
+    val = 200;
+    print("    val history: [100, 200], current:", val);
+    int result = add(val, 0);
+    print("    add(val, 0):", result);
+    print("    (history traveled into function)");
+    print("");
+
+    // --- Loops ---
+    print("[9] SHARP FOR (escape hatch)");
+    print("    Counting normally:");
+    sharp for (int i = 0; i < 5; i++) {
+        print("      i =", i);
+    }
+    print("");
+
+    // --- The End ---
+    print("========================================");
+    print("  That's Blur! Regression to the mean.");
+    print("========================================");
+
+    return 0;
+}

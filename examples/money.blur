@@ -1,0 +1,51 @@
+// Money - watch your savings regress to the mean!
+// In Blur, getting rich is hard. Your balance fights back.
+
+int blur() {
+    print("=== The Blur Economy ===");
+    print("Where every transaction regresses to the mean...");
+    print("");
+
+    int balance = 100;
+    print("Starting balance:", balance);
+    print("");
+
+    // Try to get rich
+    print("Depositing $900 (hoping for $1000)...");
+    balance = 1000;
+    print("Balance:", balance, "(avg of 100, 1000 = 550, ceil = 550)");
+
+    print("");
+    print("Depositing another $1000...");
+    balance = 1000;
+    print("Balance:", balance, "(avg of 100, 1000, 1000 = 700)");
+
+    print("");
+    print("And another $1000...");
+    balance = 1000;
+    print("Balance:", balance, "(avg = 775)");
+
+    print("");
+    print("No matter how much you deposit, the past drags you down!");
+    print("");
+
+    // Spending is also weird
+    print("--- New account ---");
+    int savings = 500;
+    print("Savings:", savings);
+
+    savings = 500;
+    print("Same amount:", savings);
+
+    savings = 500;
+    print("Still same:", savings);
+
+    print("");
+    print("Now spend it all (set to 0):");
+    savings = 0;
+    print("Savings:", savings, "(avg of 500,500,500,0 = 375!)");
+    print("");
+    print("You can't go broke in Blur. Your history protects you.");
+
+    return 0;
+}

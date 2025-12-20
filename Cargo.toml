@@ -1,0 +1,11 @@
+[package]
+name = "blur"
+version = "0.1.0"
+edition = "2021"
+description = "The Blur esoteric language interpreter - where every variable is the average of its history"
+
+[dependencies]
+logos = "0.14"
+thiserror = "2.0"
+rustyline = "15.0"
+dirs = "6.0"

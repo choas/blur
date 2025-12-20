@@ -1,0 +1,60 @@
+// Blur Factor Demo
+// Default blur is 0.9 (slight recency bias)
+// Run with: blur examples/decay.blur
+//           blur --blur 1.0 examples/decay.blur (pure average)
+//           blur --blur 0.5 examples/decay.blur (strong recency bias)
+//
+// Or uncomment the #blur directive below:
+// #blur 0.5
+
+int blur() {
+    print("=== Blur Factor Demo ===");
+    print("Current blur factor:", get_blur());
+    print("");
+
+    // Boolean: order matters with blur < 1.0!
+    print("[1] Boolean with blur:");
+    bool a = true;
+    a = false;
+    print("    true, false ->", a);
+
+    bool b = false;
+    b = true;
+    print("    false, true ->", b);
+    print("    (With blur < 1.0, these differ!)");
+    print("");
+
+    // Integer: history weight
+    print("[2] Integer with history:");
+    int x = 0;
+    x = 0;
+    x = 0;
+    x = 100;
+    print("    0, 0, 0, 100 ->", x);
+    print("    (blur=1.0: 25, blur=0.5: 54)");
+    print("");
+
+    // Fighting the past
+    print("[3] Overcoming history:");
+    int old = 10;
+    old = 10;
+    old = 10;
+    old = 10;
+    old = 10;
+    print("    After 5x 10:", old);
+    old = 100;
+    print("    Then 100:", old);
+    print("    (With lower blur, one new value has more power!)");
+    print("");
+
+    // Strings too!
+    print("[4] String blur:");
+    string s = "aaa";
+    s = "aaa";
+    s = "aaa";
+    s = "zzz";
+    print("    aaa, aaa, aaa, zzz ->", s);
+    print("    (lower blur shifts toward recent 'zzz')");
+
+    return 0;
+}

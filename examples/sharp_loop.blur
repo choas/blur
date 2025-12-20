@@ -1,0 +1,15 @@
+// The escape hatch: sharp for
+int blur() {
+    print("=== Normal For Loop (sharp for) ===");
+    print("sharp for (int i = 0; i < 10; i++)");
+    print("");
+
+    sharp for (int i = 0; i < 10; i++) {
+        print("i =", i);
+    }
+
+    print("");
+    print("With 'sharp for', the loop counter behaves normally!");
+    print("Only 10 iterations, as expected.");
+    return 0;
+}

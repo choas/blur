@@ -1,0 +1,47 @@
+// Grade Point Average - where Blur makes sense!
+// Finally, a use case where averaging is the FEATURE!
+
+int blur() {
+    print("=== Student GPA Calculator ===");
+    print("Blur: where GPA calculation is built-in!");
+    print("");
+
+    float gpa = 4.0;
+    print("First semester (A):", gpa);
+
+    gpa = 3.0;
+    print("Second semester (B):", gpa);
+
+    gpa = 3.5;
+    print("Third semester (B+):", gpa);
+
+    gpa = 2.0;
+    print("Fourth semester (C):", gpa);
+
+    gpa = 4.0;
+    print("Fifth semester (A):", gpa);
+
+    print("");
+    print("Final GPA:", gpa);
+    print("(Calculated automatically by Blur!)");
+    print("");
+
+    // Letter grade averaging
+    print("--- Letter Grades (as chars) ---");
+    char grade = 'A';
+    print("First:", grade);
+
+    grade = 'B';
+    print("Second:", grade, "(A=65, B=66, avg=66)");
+
+    grade = 'C';
+    print("Third:", grade, "(avg of A,B,C = 66)");
+
+    grade = 'F';
+    print("Fourth:", grade, "(avg of A,B,C,F = 68 = D)");
+
+    print("");
+    print("One F can't sink you in Blur!");
+
+    return 0;
+}

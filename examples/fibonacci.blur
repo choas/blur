@@ -1,0 +1,42 @@
+// Fibonacci in Blur - watch it struggle!
+// The averaging makes fibonacci... interesting.
+
+int blur() {
+    print("=== Fibonacci: Normal vs Blur ===");
+    print("");
+
+    // First, let's do it with unblur for (works normally)
+    print("With unblur for (normal behavior):");
+    int a = 0;
+    int b = 1;
+
+    unblur for (int i = 0; i < 10; i++) {
+        print("fib:", a);
+        int temp = a;
+        a = b;
+        // Note: a is already blurred from previous iterations
+        b = b + temp;
+    }
+
+    print("");
+    print("Notice how even with unblur for, a and b get blurred!");
+    print("The loop counter works, but the values still average.");
+    print("");
+
+    // Now let's try with regular for (chaos)
+    print("With regular for (prepare for chaos):");
+    print("(This would take forever - the counter gets stuck)");
+    print("Uncomment at your own risk!");
+
+    // Uncomment to see the chaos:
+    // int x = 0;
+    // int y = 1;
+    // for (int i = 0; i < 5; i++) {
+    //     print("i =", i, "fib =", x);
+    //     int t = x;
+    //     x = y;
+    //     y = y + t;
+    // }
+
+    return 0;
+}

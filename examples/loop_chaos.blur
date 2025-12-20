@@ -1,0 +1,15 @@
+// Watch the loop counter drag towards its average
+int blur() {
+    print("=== The Infamous Blur For Loop ===");
+    print("Attempting: for (int i = 0; i < 5; i++)");
+    print("");
+
+    for (int i = 0; i < 5; i++) {
+        print("i =", i);
+    }
+
+    print("");
+    print("Notice how i gets STUCK at each value!");
+    print("The average drags the counter down.");
+    return 0;
+}

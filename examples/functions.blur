@@ -1,0 +1,27 @@
+// Functions - history travels with parameters!
+int double_trouble(int x) {
+    // x arrives with FULL history from caller
+    print("  Inside function, x =", x);
+    x = x * 2;  // Adds to the existing history!
+    print("  After x = x * 2, x =", x);
+    return x;
+}
+
+int blur() {
+    print("=== Functions with History ===");
+    print("");
+
+    int val = 10;
+    print("val = 10:", val);
+
+    val = 20;
+    print("val = 20 (avg of 10,20 = 15):", val);
+
+    print("Calling double_trouble(val)...");
+    // val's history [10, 20] travels into the function!
+    // Inside: x = 15, then x = 30 added -> [10, 20, 30] -> avg = 20
+    int result = double_trouble(val);
+    print("Result:", result);
+
+    return 0;
+}

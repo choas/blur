@@ -1,0 +1,54 @@
+// Voting in Blur - democracy through averaging!
+// Booleans use >= 0.5 threshold
+
+int blur() {
+    print("=== Blur Democracy ===");
+    print("true >= 50% of votes = true");
+    print("");
+
+    bool motion = true;
+    print("Initial vote (yes):", motion);
+
+    motion = false;
+    print("Second vote (no):", motion, "- 50% = still true!");
+
+    motion = false;
+    print("Third vote (no):", motion, "- 33% = now false");
+
+    motion = true;
+    print("Fourth vote (yes):", motion, "- 50% = true again!");
+
+    print("");
+    print("In Blur, every vote in history counts forever.");
+    print("Early voters have outsized influence!");
+    print("");
+
+    // Weighting example
+    print("--- Stuffing the ballot box ---");
+    bool rigged = true;
+    rigged = true;
+    rigged = true;
+    rigged = true;
+    rigged = true;
+    print("5 yes votes:", rigged);
+
+    rigged = false;
+    print("+ 1 no vote:", rigged, "(5/6 = 83%)");
+
+    rigged = false;
+    print("+ 1 no vote:", rigged, "(5/7 = 71%)");
+
+    rigged = false;
+    print("+ 1 no vote:", rigged, "(5/8 = 62%)");
+
+    rigged = false;
+    print("+ 1 no vote:", rigged, "(5/9 = 55%)");
+
+    rigged = false;
+    print("+ 1 no vote:", rigged, "(5/10 = 50% - still true!)");
+
+    rigged = false;
+    print("+ 1 no vote:", rigged, "(5/11 = 45% - finally false!)");
+
+    return 0;
+}
