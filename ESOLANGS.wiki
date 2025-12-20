@@ -1,0 +1,373 @@
+'''Blur''' is an esoteric programming language where every variable stores the '''average''' of all values it has ever been assigned. Created in 2025, Blur is a C-like language that demonstrates how a simple semantic change can create chaotic and unpredictable behavior.
+
+== Overview ==
+
+In most programming languages, assigning a value to a variable replaces the old value. In Blur, the variable's value becomes the '''mean''' of all values ever assigned to it. This creates a "regression to the mean" effect where variables resist change and loop counters behave chaotically.
+
+{| class="wikitable"
+|-
+! Paradigm !! Imperative
+|-
+| Designed by || choas
+|-
+| Appeared in || 2025
+|-
+| Influenced by || [[C]]
+|-
+| File extension || .blur
+|-
+| Entry point || <code>blur()</code>
+|}
+
+== Semantics ==
+
+=== Variable Averaging ===
+
+Every variable maintains a history of all assigned values. Reading a variable returns the average:
+
+<pre>
+int x = 10;    // history: [10], value = 10
+x = 20;        // history: [10, 20], value = 15
+x = 30;        // history: [10, 20, 30], value = 20
+</pre>
+
+=== Type-Specific Rounding ===
+
+* '''int''': Uses ceiling (rounds up). <code>avg([5, 6]) = 5.5 → 6</code>
+* '''float''': Exact average, no rounding
+* '''bool''': <code>true</code> if ratio of trues >= 0.5, else <code>false</code>
+* '''char''': Average of ASCII values, ceiling
+* '''string''': Per-position character averaging (space = no-op)
+
+=== Blur Factor (Recency Weighting) ===
+
+The blur factor controls how much history affects the current value. The default is 0.9 (slight recency bias).
+
+<pre>
+blur --blur 1.0 program.blur   # Pure average
+blur --blur 0.5 program.blur   # Strong recency bias
+blur program.blur              # Default: 0.9
+</pre>
+
+Or use a directive in your program:
+
+<pre>
+#blur 0.5
+
+int blur() {
+    bool b = true;
+    b = false;
+    print(b);  // false (recent value wins)
+    return 0;
+}
+</pre>
+
+'''How it works:''' Each value's weight = blur^age, where age 0 is the most recent.
+
+{| class="wikitable"
+|-
+! blur !! Behavior
+|-
+| 1.0 || Maximum blur - pure average
+|-
+| 0.9 || Slight recency bias (default)
+|-
+| 0.5 || Strong recency bias
+|-
+| 0.0 || No blur - only most recent value counts
+|}
+
+'''Example:''' <code>true, false</code> with different blur values:
+* blur=1.0: 50% true → <code>true</code>
+* blur=0.9: 47% true → <code>false</code> (slight recency bias)
+* blur=0.5: 33% true → <code>false</code> (recent <code>false</code> wins)
+
+=== Increment/Decrement Operators ===
+
+The <code>++</code> and <code>--</code> operators add <code>current_value ± 1</code> to the history:
+
+<pre>
+int x = 5;     // history: [5], value = 5
+x++;           // history: [5, 6], value = 6 (ceil of 5.5)
+x++;           // history: [5, 6, 7], value = 6 (ceil of 6.0)
+</pre>
+
+=== Compound Assignment ===
+
+Compound operators like <code>+=</code> also add to history:
+
+<pre>
+int x = 10;    // history: [10]
+x += 5;        // history: [10, 15], value = 13 (ceil of 12.5)
+</pre>
+
+== The Chaotic For Loop ==
+
+The most infamous behavior in Blur is the for loop:
+
+<pre>
+for (int i = 0; i < 10; i++) {
+    print(i);
+}
+</pre>
+
+The loop counter <code>i</code> averages itself, causing it to "stick" at each value:
+
+<pre>
+i = 0    (1 iteration)
+i = 1    (2 iterations - stuck)
+i = 2    (7 iterations - stuck longer)
+i = 3    (20 iterations)
+i = 4    (52 iterations)
+...
+</pre>
+
+The number of iterations at each value grows exponentially. A simple loop to 10 may never terminate!
+
+'''Safety limit:''' Regular <code>for</code> loops automatically stop after 1000 iterations with a warning. Use <code>sharp for</code> for unlimited iterations.
+
+=== Escape Hatch: sharp for ===
+
+To create a loop that behaves normally, use the <code>sharp</code> keyword:
+
+<pre>
+sharp for (int i = 0; i < 10; i++) {
+    print(i);  // Prints 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+}
+</pre>
+
+Variables declared in a <code>sharp for</code> header do not average.
+
+== Boolean Averaging ==
+
+Booleans use a threshold of 0.5:
+
+<pre>
+bool flag = true;   // history: [T], value = true
+flag = false;       // history: [T, F], ratio = 0.5 → true
+flag = false;       // history: [T, F, F], ratio = 0.33 → false
+</pre>
+
+A single <code>true</code> among equals is <code>true</code>. A single <code>true</code> among many <code>false</code> values becomes <code>false</code>.
+
+== String Blurring ==
+
+Strings use '''position-based''' character averaging. Each position in the string has its own history:
+
+<pre>
+string s = "hello";  // positions: h, e, l, l, o
+s = " a   ";         // space is no-op, only 'a' at pos 1 adds to history
+print(s);            // "hcllo" - pos 1 averages 'e'(101) + 'a'(97) = 99 = 'c'
+</pre>
+
+=== Space is a No-Op ===
+
+Spaces in an assigned string do not add to any position's history. This allows partial updates:
+
+<pre>
+string s = "abc";
+s = "  x";       // only position 2 gets 'x' added
+print(s);        // "abn" - 'c'(99) + 'x'(120) = 109.5 → 110 = 'n'
+</pre>
+
+=== Case Averaging ===
+
+Uppercase and lowercase letters have different ASCII values, so they average:
+
+<pre>
+string s = "abc";
+s = "ABC";
+s = "ABC";
+print(s);        // "LMN" - 'a'(97) + 'A'(65)*2 = 76 = 'L', etc.
+</pre>
+
+=== String Repetition ===
+
+Use <code>"str" * n</code> to add a string to history multiple times (for weighting):
+
+<pre>
+string s = "aaa" * 3;  // 'a' added 3 times to each position
+s = "zzz";             // 'z' added once
+print(s);              // "hhh" - avg of 'a'*3 + 'z' = 104 = 'h'
+</pre>
+
+=== blurstr() Function ===
+
+Blur multiple strings without a variable:
+
+<pre>
+print(blurstr("hello", " a   "));           // "hcllo"
+print(blurstr("aaa" * 3, "zzz"));           // "hhh"
+</pre>
+
+== Functions ==
+
+Functions pass parameters '''with their history''':
+
+<pre>
+int double_it(int x) {
+    return x * 2;
+}
+
+int blur() {
+    int val = 10;
+    val = 20;           // val = 15 (avg of 10, 20)
+    int result = double_it(val);  // passes 15
+    return 0;
+}
+</pre>
+
+== Syntax ==
+
+Blur uses C-style syntax with the following features:
+
+=== Types ===
+* <code>int</code>, <code>float</code>, <code>bool</code>, <code>char</code>, <code>string</code>, <code>void</code>
+
+=== Operators ===
+* Arithmetic: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>
+* Increment/Decrement: <code>++</code>, <code>--</code>
+* Compound: <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code>
+* Comparison: <code>==</code>, <code>!=</code>, <code><</code>, <code>></code>, <code><=</code>, <code>>=</code>
+* Logical: <code>&&</code>, <code>||</code>, <code>!</code>
+
+=== Control Flow ===
+* <code>if</code> / <code>else</code>
+* <code>while</code>
+* <code>for</code> (with averaging)
+* <code>sharp for</code> (without averaging)
+
+=== Built-in Functions ===
+* <code>print(args...)</code> - prints values to stdout
+* <code>blurstr(strs...)</code> - returns the blur of multiple strings
+* <code>get_blur()</code> - returns the current blur factor (0.0-1.0)
+
+=== Entry Point ===
+
+Programs start at <code>blur()</code>, not <code>main()</code>:
+
+<pre>
+int blur() {
+    print("Hello, Blur!");
+    return 0;
+}
+</pre>
+
+== Arrays ==
+
+Each array element maintains its own history:
+
+<pre>
+int arr[3] = {1, 2, 3};
+arr[0] = 10;    // arr[0] history: [1, 10], value = 6
+arr[1]++;       // arr[1] history: [2, 3], value = 3
+</pre>
+
+== Example Programs ==
+
+=== Hello World ===
+
+<pre>
+int blur() {
+    print("Hello, World!");
+    return 0;
+}
+</pre>
+
+=== Demonstrating Averaging ===
+
+<pre>
+int blur() {
+    int money = 5;
+    print("Start:", money);      // 5
+
+    money++;
+    print("After ++:", money);   // 6
+
+    money = 100;
+    print("After = 100:", money); // 37
+
+    return 0;
+}
+</pre>
+
+=== Counting (The Hard Way) ===
+
+<pre>
+int blur() {
+    print("Attempting to count to 5...");
+
+    for (int i = 0; i < 5; i++) {
+        print("i =", i);
+    }
+
+    print("(This takes a very long time)");
+    return 0;
+}
+</pre>
+
+=== Counting (The Easy Way) ===
+
+<pre>
+int blur() {
+    print("Counting to 10:");
+
+    sharp for (int i = 0; i < 10; i++) {
+        print(i);
+    }
+
+    return 0;
+}
+</pre>
+
+== Implementation ==
+
+The reference implementation is written in Rust and includes:
+* Lexer using the <code>logos</code> crate
+* Recursive descent parser
+* Tree-walking interpreter
+* Interactive REPL
+
+=== Running Blur ===
+
+<pre>
+blur program.blur       # Run a program
+blur                    # Start the REPL
+blur -e "int x = 5;"    # Execute code directly
+blur -                  # Read and execute from stdin
+blur --help             # Show help
+</pre>
+
+Examples:
+<pre>
+blur -e "int x = 5; x++; x = 10; print(x);"
+echo "int x = 5; print(x);" | blur -
+</pre>
+
+=== REPL Commands ===
+
+* <code>.help</code> - Show help
+* <code>.vars</code> - Show variables and their history
+* <code>.blur [value]</code> - Show or set blur factor (0.0-1.0)
+* <code>.clear</code> - Reset interpreter state
+* <code>.load <file></code> - Load and run a .blur file
+* <code>.run [func]</code> - Run a function (default: blur)
+* <code>.exit</code> - Quit
+
+== Computational Class ==
+
+Blur is likely Turing-complete when using <code>sharp for</code> loops, as it can simulate standard imperative programs. The behavior of regular <code>for</code> loops makes certain computations impractical or impossible to complete in reasonable time.
+
+== External Resources ==
+
+* [https://github.com/choas/blur GitHub Repository]
+
+== See Also ==
+
+* [[C]] - The language Blur is based on
+* [[Fractran]] - Another language with unusual arithmetic semantics
+
+[[Category:Languages]]
+[[Category:2025]]
+[[Category:Implemented]]
+[[Category:Turing complete]]
