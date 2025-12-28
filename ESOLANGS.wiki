@@ -144,11 +144,11 @@ Booleans use a threshold of 0.5:
 
 <pre>
 bool flag = true;   // history: [T], value = true
-flag = false;       // history: [T, F], value = false
-flag = false;       // history: [T, F, F], value = false
+flag = true;        // history: [T, T], value = true
+flag = false;       // history: [T, T, F], value = true (history wins!)
 </pre>
 
-With the default blur=0.9, recent values have more weight, so a <code>false</code> after <code>true</code> typically wins. With blur=1.0 (pure average), a single <code>true</code> among one <code>false</code> gives exactly 50% and rounds to <code>true</code>.
+Even after assigning <code>false</code>, the variable stays <code>true</code> because the history of trues outweighs the single false. This is the "regression to the mean" effect.
 
 == String Blurring ==
 

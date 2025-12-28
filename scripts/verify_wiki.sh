@@ -60,9 +60,9 @@ check "Increment (5,++,++) → 6" "6" "$result"
 result=$($BLUR --blur 1.0 -e "int x = 10; x += 5; print(x);")
 check "Compound x=10, x+=5 (blur=1.0) → 13" "13" "$result"
 
-# Test 6: Boolean averaging
-result=$($BLUR -e "bool flag = true; flag = false; print(flag);")
-check "Bool (true,false) with blur=0.9 → false" "false" "$result"
+# Test 6: Boolean averaging - history wins
+result=$($BLUR -e "bool flag = true; flag = true; flag = false; print(flag);")
+check "Bool (true,true,false) → true (history wins)" "true" "$result"
 
 # Test 7: String hello + " a   "
 result=$($BLUR -e 'string s = "hello"; s = " a   "; print(s);')
