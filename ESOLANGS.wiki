@@ -27,8 +27,8 @@ Every variable maintains a history of all assigned values. Reading a variable re
 
 <pre>
 int x = 10;    // history: [10], value = 10
-x = 20;        // history: [10, 20], value = 15
-x = 30;        // history: [10, 20, 30], value = 20
+x = 20;        // history: [10, 20], value = 16
+x = 30;        // history: [10, 20, 30], value = 21
 </pre>
 
 === Type-Specific Rounding ===
@@ -144,11 +144,11 @@ Booleans use a threshold of 0.5:
 
 <pre>
 bool flag = true;   // history: [T], value = true
-flag = false;       // history: [T, F], ratio = 0.5 → true
-flag = false;       // history: [T, F, F], ratio = 0.33 → false
+flag = false;       // history: [T, F], value = false
+flag = false;       // history: [T, F, F], value = false
 </pre>
 
-A single <code>true</code> among equals is <code>true</code>. A single <code>true</code> among many <code>false</code> values becomes <code>false</code>.
+With the default blur=0.9, recent values have more weight, so a <code>false</code> after <code>true</code> typically wins. With blur=1.0 (pure average), a single <code>true</code> among one <code>false</code> gives exactly 50% and rounds to <code>true</code>.
 
 == String Blurring ==
 
@@ -285,7 +285,7 @@ int blur() {
     print("After ++:", money);   // 6
 
     money = 100;
-    print("After = 100:", money); // 37
+    print("After = 100:", money); // 41
 
     return 0;
 }
