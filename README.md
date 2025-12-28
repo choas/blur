@@ -4,8 +4,8 @@
 
 ```c
 int x = 10;    // x = 10
-x = 20;        // x = 15 (average of 10, 20)
-x = 30;        // x = 20 (average of 10, 20, 30)
+x = 20;        // x = 16
+x = 30;        // x = 21
 ```
 
 Welcome to regression to the mean.
