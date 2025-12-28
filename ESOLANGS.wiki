@@ -167,7 +167,7 @@ Spaces in an assigned string do not add to any position's history. This allows p
 <pre>
 string s = "abc";
 s = "  x";       // only position 2 gets 'x' added
-print(s);        // "abo" - with blur=0.9, 'x' weighted more
+print(s);        // "abo" - 'c'(99) + 'x'(120) → 111 = 'o'
 </pre>
 
 === Case Averaging ===
@@ -178,7 +178,7 @@ Uppercase and lowercase letters have different ASCII values, so they average:
 string s = "abc";
 s = "ABC";
 s = "ABC";
-print(s);        // "KLM" - with blur=0.9, recent 'ABC' weighted more
+print(s);        // "KLM" - 'a'(97) + 'A'(65)*2 → 75 = 'K', etc.
 </pre>
 
 === String Repetition ===
@@ -188,7 +188,7 @@ Use <code>"str" * n</code> to add a string to history multiple times (for weight
 <pre>
 string s = "aaa" * 3;  // 'a' added 3 times to each position
 s = "zzz";             // 'z' added once
-print(s);              // "iii" - with blur=0.9, 'z' weighted more
+print(s);              // "iii" - 'a'(97)*3 + 'z'(122) → 105 = 'i'
 </pre>
 
 === blurstr() Function ===
