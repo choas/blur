@@ -120,7 +120,7 @@ int blur() {
 
 ## Documentation
 
-See [WIKI.md](WIKI.md) for the complete language specification.
+See the [Esolangs wiki page](https://esolangs.org/wiki/Blur) for the complete language specification.
 
 ## License
 
