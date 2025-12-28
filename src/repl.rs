@@ -386,7 +386,7 @@ fn print_variables(interpreter: &Interpreter) {
                 name,
                 val,
                 history_len,
-                if blur_val.unblurred { ", unblurred" } else { "" }
+                if blur_val.sharp { ", sharp" } else { "" }
             );
         }
     }

@@ -5,12 +5,12 @@ int blur() {
     print("=== Fibonacci: Normal vs Blur ===");
     print("");
 
-    // First, let's do it with unblur for (works normally)
-    print("With unblur for (normal behavior):");
+    // First, let's do it with sharp for (works normally)
+    print("With sharp for (normal behavior):");
     int a = 0;
     int b = 1;
 
-    unblur for (int i = 0; i < 10; i++) {
+    sharp for (int i = 0; i < 10; i++) {
         print("fib:", a);
         int temp = a;
         a = b;
@@ -19,7 +19,7 @@ int blur() {
     }
 
     print("");
-    print("Notice how even with unblur for, a and b get blurred!");
+    print("Notice how even with sharp for, a and b get blurred!");
     print("The loop counter works, but the values still average.");
     print("");
 

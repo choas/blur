@@ -42,7 +42,7 @@ pub struct BlurValue {
     pub history: Vec<f64>, // All values stored as f64 for averaging
     pub bool_history: Vec<bool>, // Separate history for booleans
     pub string_history: Vec<Vec<char>>, // Per-position character history for strings
-    pub unblurred: bool, // If true, don't average - just use last value
+    pub sharp: bool, // If true, don't average - just use last value (sharp mode)
 }
 
 impl BlurValue {
@@ -52,17 +52,17 @@ impl BlurValue {
             history: Vec::new(),
             bool_history: Vec::new(),
             string_history: Vec::new(),
-            unblurred: false,
+            sharp: false,
         }
     }
 
-    pub fn new_unblurred(var_type: Type) -> Self {
+    pub fn new_sharp(var_type: Type) -> Self {
         BlurValue {
             var_type,
             history: Vec::new(),
             bool_history: Vec::new(),
             string_history: Vec::new(),
-            unblurred: true,
+            sharp: true,
         }
     }
 
@@ -72,7 +72,7 @@ impl BlurValue {
             history: vec![value],
             bool_history: Vec::new(),
             string_history: Vec::new(),
-            unblurred: false,
+            sharp: false,
         }
     }
 
@@ -82,20 +82,20 @@ impl BlurValue {
             history: Vec::new(),
             bool_history: vec![value],
             string_history: Vec::new(),
-            unblurred: false,
+            sharp: false,
         }
     }
 
     pub fn push(&mut self, value: f64) {
-        if self.unblurred {
-            // Unblurred: replace instead of append
+        if self.sharp {
+            // Sharp mode: replace instead of append
             self.history.clear();
         }
         self.history.push(value);
     }
 
     pub fn push_bool(&mut self, value: bool) {
-        if self.unblurred {
+        if self.sharp {
             self.bool_history.clear();
         }
         self.bool_history.push(value);
@@ -103,7 +103,7 @@ impl BlurValue {
 
     /// Push a string value - adds each non-space character to its position's history
     pub fn push_string(&mut self, s: &str) {
-        if self.unblurred {
+        if self.sharp {
             self.string_history.clear();
         }
         for (i, c) in s.chars().enumerate() {
@@ -772,7 +772,7 @@ impl Interpreter {
     fn exec_sharp_stmt(&mut self, stmt: &Stmt) -> Result<ControlFlow, RuntimeError> {
         match stmt {
             Stmt::VarDecl(var_type, name, init) => {
-                let mut blur_val = BlurValue::new_unblurred(var_type.clone());
+                let mut blur_val = BlurValue::new_sharp(var_type.clone());
                 if let Some(expr) = init {
                     let value = self.eval_expr(expr)?;
                     match var_type {
