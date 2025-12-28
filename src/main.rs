@@ -60,7 +60,7 @@ ESCAPE HATCH:
     The loop counter 'i' behaves normally (not averaged).
 
 WEBSITE:
-    https://esolangs.org/wiki/Blur (coming soon)
+    https://esolangs.org/wiki/Blur
 "#,
         VERSION
     );

@@ -346,6 +346,10 @@ echo "int x = 5; print(x);" | blur -
 
 Blur is likely Turing-complete when using `sharp for` loops, as it can simulate standard imperative programs. The behavior of regular `for` loops makes certain computations impractical or impossible to complete in reasonable time.
 
+## Motivation
+
+Blur was created as an experiment to verify whether a Large Language Model (LLM) that has never encountered a specific programming language can understand its concepts from documentation alone and generate valid programs. The language's unusual semantics (variable averaging) provide a clear test case: an LLM must truly understand the blur mechanics rather than pattern-match against familiar languages.
+
 ## External Resources
 
 - [GitHub Repository](https://github.com/choas/blur)
