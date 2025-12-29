@@ -1,6 +1,6 @@
 [package]
 name = "blur"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "The Blur esoteric language interpreter - where every variable is the average of its history"
 
