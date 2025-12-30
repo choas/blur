@@ -84,7 +84,8 @@ impl Parser {
     }
 
     fn parse_function(&mut self) -> Result<Function, ParseError> {
-        let return_type = self.parse_type()?;
+        // Parse return type (required for syntax) but not stored
+        self.parse_type()?;
         let name = match self.advance() {
             Some(Token::Identifier(s)) => s,
             Some(t) => return Err(ParseError::Expected {
@@ -126,7 +127,6 @@ impl Parser {
         Ok(Function {
             name,
             params,
-            return_type,
             body,
         })
     }

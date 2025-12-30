@@ -6,7 +6,6 @@ pub enum Type {
     Char,
     String,
     Void,
-    Array(Box<Type>, usize), // Array of type with size
 }
 
 #[derive(Debug, Clone)]
@@ -45,12 +44,6 @@ pub enum Expr {
 
     // String repetition: "str" * n (adds to history n times)
     StringRepeat(Box<Expr>, Box<Expr>),
-
-    // Assignment expressions (for use in for-loop updates)
-    Assign(String, Box<Expr>),
-    ArrayAssign(String, Box<Expr>, Box<Expr>), // array[index] = value
-    CompoundAssign(String, CompoundOp, Box<Expr>),
-    ArrayCompoundAssign(String, Box<Expr>, CompoundOp, Box<Expr>),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -135,7 +128,6 @@ pub enum Stmt {
 pub struct Function {
     pub name: String,
     pub params: Vec<(Type, String)>,
-    pub return_type: Type,
     pub body: Vec<Stmt>,
 }
 

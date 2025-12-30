@@ -25,14 +25,10 @@ pub enum RuntimeError {
     UndefinedVar(String),
     #[error("Undefined function: {0}")]
     UndefinedFunc(String),
-    #[error("Type mismatch: expected {expected}, got {got}")]
-    TypeMismatch { expected: String, got: String },
     #[error("Division by zero")]
     DivisionByZero,
     #[error("Array index out of bounds: {index} for array of size {size}")]
     IndexOutOfBounds { index: i64, size: usize },
-    #[error("Invalid operation: {0}")]
-    InvalidOp(String),
 }
 
 /// A Blur value - stores the history of all assigned values
@@ -63,26 +59,6 @@ impl BlurValue {
             bool_history: Vec::new(),
             string_history: Vec::new(),
             sharp: true,
-        }
-    }
-
-    pub fn new_with_value(var_type: Type, value: f64) -> Self {
-        BlurValue {
-            var_type,
-            history: vec![value],
-            bool_history: Vec::new(),
-            string_history: Vec::new(),
-            sharp: false,
-        }
-    }
-
-    pub fn new_bool(value: bool) -> Self {
-        BlurValue {
-            var_type: Type::Bool,
-            history: Vec::new(),
-            bool_history: vec![value],
-            string_history: Vec::new(),
-            sharp: false,
         }
     }
 
@@ -233,7 +209,6 @@ impl BlurValue {
                 }
             }
             Type::Void => Value::Void,
-            Type::Array(_, _) => Value::Void, // Arrays are handled separately
         }
     }
 
@@ -272,17 +247,6 @@ impl Value {
             Value::Float(f) => *f != 0.0,
             Value::Char(c) => *c != '\0',
             _ => false,
-        }
-    }
-
-    pub fn type_name(&self) -> &'static str {
-        match self {
-            Value::Int(_) => "int",
-            Value::Float(_) => "float",
-            Value::Bool(_) => "bool",
-            Value::Char(_) => "char",
-            Value::String(_) => "string",
-            Value::Void => "void",
         }
     }
 }
@@ -951,76 +915,6 @@ impl Interpreter {
                     .map(|a| self.eval_expr_as_blur(a))
                     .collect::<Result<Vec<_>, _>>()?;
                 self.call_function(name, arg_values)
-            }
-
-            Expr::Assign(name, value_expr) => {
-                let value = self.eval_expr(value_expr)?;
-                let var = self.get_var_mut(name)?;
-                match &var.var_type {
-                    Type::Bool => var.push_bool(value.to_bool()),
-                    _ => var.push(value.to_f64()),
-                }
-                Ok(var.get())
-            }
-
-            Expr::ArrayAssign(name, index_expr, value_expr) => {
-                let index = self.eval_expr(index_expr)?.to_f64() as i64;
-                let value = self.eval_expr(value_expr)?;
-                let arr = self.get_array_mut(name)?;
-                if index < 0 || index as usize >= arr.len() {
-                    return Err(RuntimeError::IndexOutOfBounds { index, size: arr.len() });
-                }
-                let elem = &mut arr[index as usize];
-                match &elem.var_type {
-                    Type::Bool => elem.push_bool(value.to_bool()),
-                    _ => elem.push(value.to_f64()),
-                }
-                Ok(elem.get())
-            }
-
-            Expr::CompoundAssign(name, op, value_expr) => {
-                let rhs = self.eval_expr(value_expr)?;
-                let var = self.get_var_mut(name)?;
-                let current = var.get_raw();
-                let new_val = match op {
-                    CompoundOp::AddAssign => current + rhs.to_f64(),
-                    CompoundOp::SubAssign => current - rhs.to_f64(),
-                    CompoundOp::MulAssign => current * rhs.to_f64(),
-                    CompoundOp::DivAssign => {
-                        if rhs.to_f64() == 0.0 {
-                            return Err(RuntimeError::DivisionByZero);
-                        }
-                        current / rhs.to_f64()
-                    }
-                    CompoundOp::ModAssign => current % rhs.to_f64(),
-                };
-                var.push(new_val);
-                Ok(var.get())
-            }
-
-            Expr::ArrayCompoundAssign(name, index_expr, op, value_expr) => {
-                let index = self.eval_expr(index_expr)?.to_f64() as i64;
-                let rhs = self.eval_expr(value_expr)?;
-                let arr = self.get_array_mut(name)?;
-                if index < 0 || index as usize >= arr.len() {
-                    return Err(RuntimeError::IndexOutOfBounds { index, size: arr.len() });
-                }
-                let elem = &mut arr[index as usize];
-                let current = elem.get_raw();
-                let new_val = match op {
-                    CompoundOp::AddAssign => current + rhs.to_f64(),
-                    CompoundOp::SubAssign => current - rhs.to_f64(),
-                    CompoundOp::MulAssign => current * rhs.to_f64(),
-                    CompoundOp::DivAssign => {
-                        if rhs.to_f64() == 0.0 {
-                            return Err(RuntimeError::DivisionByZero);
-                        }
-                        current / rhs.to_f64()
-                    }
-                    CompoundOp::ModAssign => current % rhs.to_f64(),
-                };
-                elem.push(new_val);
-                Ok(elem.get())
             }
         }
     }
